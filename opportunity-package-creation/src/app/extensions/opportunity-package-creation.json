@@ -1,0 +1,12 @@
+{
+  "type": "crm-card",
+  "data": {
+    "title": "Package Creation",
+    "uid": "package_creation",
+    "location": "crm.record.tab",
+    "module": {
+      "file": "OpportunityPackageCreation.tsx"
+    },
+    "objectTypes": [{ "name": "deals" }]
+  }
+}

@@ -1,19 +1,23 @@
 {
-  "name": "Get started App",
-  "description": "This is an example private app that shows a custom card on the Contact record tab built with React-based frontend. This card demonstrates a simple handshake with HubSpot's serverless backend.",
-  "uid": "get_started_app",
-  "scopes": ["crm.objects.contacts.read", "crm.objects.contacts.write"],
+  "name": "Inotiv UI Extension",
+  "description": "",
+  "uid": "inotiv_ui_extension",
+  "scopes": [
+    "crm.objects.deals.read",
+    "crm.objects.deals.write",
+    "crm.objects.custom.read",
+    "crm.objects.custom.write",
+    "crm.objects.quotes.read",
+    "crm.objects.quotes.write"
+  ],
   "public": false,
   "extensions": {
     "crm": {
       "cards": [
         {
-          "file": "extensions/example-card.json"
+          "file": "extensions/opportunity-package-creation.json"
         }
       ]
     }
-  },
-  "webhooks": {
-    "file": "./webhooks/webhooks.json"
   }
 }
