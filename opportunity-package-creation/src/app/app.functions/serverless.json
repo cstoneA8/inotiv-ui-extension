@@ -3,6 +3,10 @@
     "getPackageTypes": {
       "file": "getPackageTypes.js",
       "secrets": ["OPP_PACKAGES_ID"]
+    },
+    "getOppPackagesByType": {
+      "file": "getOppPackagesByType.js",
+      "secrets": ["OPP_PACKAGES_ID"]
     }
   }
 }

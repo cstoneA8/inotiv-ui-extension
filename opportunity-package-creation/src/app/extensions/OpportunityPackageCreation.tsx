@@ -154,6 +154,9 @@ const Extension = ({
   // Global
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedPackageType, setSelectedPackageType] = useState<
+    string | undefined
+  >(undefined);
 
   console.log("context", context);
   const portalId = context.portal.id;
@@ -162,18 +165,27 @@ const Extension = ({
     setCurrentScreen(1);
   };
 
-  const handleNext = () => {
+  const handleNext = (packageType?: string) => {
     setError(null);
+    if (packageType) {
+      setSelectedPackageType(packageType);
+    }
     setCurrentScreen(2);
   };
 
   return (
     <Flex direction="column">
-      {currentScreen === 1 && <PackageTypeSelection onNext={handleNext} />}
+      {currentScreen === 1 && (
+        <PackageTypeSelection
+          onNext={handleNext}
+          onPackageTypeSelect={setSelectedPackageType}
+        />
+      )}
       {currentScreen === 2 && (
         <StudySelection
           onBack={handleBack}
           onNext={() => setCurrentScreen(3)}
+          selectedPackageType={selectedPackageType}
         />
       )}
       {currentScreen === 3 && (

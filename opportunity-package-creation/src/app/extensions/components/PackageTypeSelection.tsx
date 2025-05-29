@@ -11,11 +11,13 @@ import {
 import { PackageTypeOption } from "../types/index";
 
 interface PackageTypeSelectionProps {
-  onNext: () => void;
+  onNext: (packageType?: string) => void;
+  onPackageTypeSelect: (packageType: string) => void;
 }
 
 export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
   onNext,
+  onPackageTypeSelect,
 }) => {
   const [packageTypes, setPackageTypes] = useState<PackageTypeOption[]>([]);
   const [selectedPackageType, setSelectedPackageType] = useState<
@@ -44,7 +46,13 @@ export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
   }, []);
 
   const handlePackageTypeChange = (value: string | number | undefined) => {
-    setSelectedPackageType(value as string);
+    const newValue = value as string;
+    setSelectedPackageType(newValue);
+    onPackageTypeSelect(newValue);
+  };
+
+  const handleNext = () => {
+    onNext(selectedPackageType);
   };
 
   if (isLoading) {
@@ -86,7 +94,7 @@ export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
       <Flex direction="row" justify="end">
         <Button
           variant="primary"
-          onClick={onNext}
+          onClick={handleNext}
           disabled={!selectedPackageType}
         >
           Select Studies
