@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { Text, Select, List, Button, Flex } from "@hubspot/ui-extensions";
+import React, { useState, useEffect } from "react";
+import {
+  hubspot,
+  Text,
+  Select,
+  List,
+  Button,
+  Flex,
+} from "@hubspot/ui-extensions";
+
+import { PackageTypeOption } from "../types/index";
 
 interface PackageTypeSelectionProps {
   onNext: () => void;
@@ -8,18 +17,43 @@ interface PackageTypeSelectionProps {
 export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
   onNext,
 }) => {
-  const [packageTypes] = useState([
-    { label: "Package Type 1", value: "package_type_1" },
-    { label: "Package Type 2", value: "package_type_2" },
-    { label: "Package Type 3", value: "package_type_3" },
-  ]);
+  const [packageTypes, setPackageTypes] = useState<PackageTypeOption[]>([]);
   const [selectedPackageType, setSelectedPackageType] = useState<
     string | undefined
   >(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPackageTypes = async () => {
+      try {
+        const response = await hubspot.serverless("getPackageTypes", {
+          parameters: {},
+        });
+        console.log("Serverless function response:", response);
+        setPackageTypes(response);
+        setIsLoading(false);
+      } catch (err) {
+        setError("Failed to load package types");
+        setIsLoading(false);
+        console.error("Error fetching package types:", err);
+      }
+    };
+
+    fetchPackageTypes();
+  }, []);
 
   const handlePackageTypeChange = (value: string | number | undefined) => {
     setSelectedPackageType(value as string);
   };
+
+  if (isLoading) {
+    return <Text>Loading package types...</Text>;
+  }
+
+  if (error) {
+    return <Text variant="bodytext">{error}</Text>;
+  }
 
   return (
     <Flex direction="column" gap="md">

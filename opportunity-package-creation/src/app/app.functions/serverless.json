@@ -1,8 +1,8 @@
 {
   "appFunctions": {
-    "myFunc": {
-      "file": "example-function.js",
-      "secrets": []
+    "getPackageTypes": {
+      "file": "getPackageTypes.js",
+      "secrets": ["OPP_PACKAGES_ID"]
     }
   }
 }
