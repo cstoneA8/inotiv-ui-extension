@@ -152,8 +152,8 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
     <Flex direction="column" gap="md">
       <Text>List of Studies</Text>
       <Flex gap="md">
-        <Text>Total Packages: {packages.length}</Text>
-        <Text>Selected Packages: {selectedPackages.length}</Text>
+        <Text>Total: {packages.length}</Text>
+        <Text>Selected: {selectedPackages.length}</Text>
       </Flex>
       <Table
         paginated={true}
