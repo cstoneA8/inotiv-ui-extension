@@ -9,6 +9,7 @@ import {
 } from "@hubspot/ui-extensions";
 
 import { PackageTypeOption } from "../types/index";
+import { ErrorScreen } from "./ErrorScreen";
 
 interface PackageTypeSelectionProps {
   onNext: (packageType?: string) => void;
@@ -26,22 +27,24 @@ export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPackageTypes = async () => {
-      try {
-        const response = await hubspot.serverless("getPackageTypes", {
-          parameters: {},
-        });
-        console.log("Serverless function response:", response);
-        setPackageTypes(response);
-        setIsLoading(false);
-      } catch (err) {
-        setError("Failed to load package types");
-        setIsLoading(false);
-        console.error("Error fetching package types:", err);
-      }
-    };
+  const fetchPackageTypes = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await hubspot.serverless("getPackageTypes", {
+        parameters: {},
+      });
+      console.log("Serverless function response:", response);
+      setPackageTypes(response);
+    } catch (err) {
+      setError("Failed to load package types. Please try again.");
+      console.error("Error fetching package types:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchPackageTypes();
   }, []);
 
@@ -60,7 +63,7 @@ export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
   }
 
   if (error) {
-    return <Text variant="bodytext">{error}</Text>;
+    return <ErrorScreen error={error} onRetry={fetchPackageTypes} />;
   }
 
   return (

@@ -12,10 +12,11 @@ import {
   Checkbox,
   hubspot,
 } from "@hubspot/ui-extensions";
+import { ErrorScreen } from "./ErrorScreen";
 
 interface StudySelectionProps {
   onBack: () => void;
-  onNext: (result: any) => void;
+  onNext: (packageType?: string, result?: any) => void;
   selectedPackageType: string | undefined;
 }
 
@@ -54,28 +55,28 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
   const [sortState, setSortState] = useState(DEFAULT_SORT_STATE);
   const itemsPerPage = 10;
 
+  const fetchPackages = async () => {
+    if (!selectedPackageType) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await hubspot.serverless("getOppPackagesByType", {
+        parameters: {
+          packageType: String(selectedPackageType),
+        },
+      });
+      setPackages(response);
+    } catch (err) {
+      setError("Failed to load packages. Please try again.");
+      console.error("Error fetching packages:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPackages = async () => {
-      if (!selectedPackageType) return;
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const response = await hubspot.serverless("getOppPackagesByType", {
-          parameters: {
-            packageType: selectedPackageType,
-          },
-        });
-        setPackages(response);
-      } catch (err) {
-        setError("Failed to load packages");
-        console.error("Error fetching packages:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchPackages();
   }, [selectedPackageType]);
 
@@ -148,13 +149,13 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
 
       // Extract the required properties from each selected package
       const selectedStudiesData = selectedPackagesData.map((pkg) => ({
-        species: pkg.properties.species,
+        species__dsa_: pkg.properties.species,
         discipline: pkg.properties.discipline,
-        sub_discipline: pkg.properties.sub_discipline,
-        cpq_quote_title: pkg.properties.cpq_quote_title,
-        lead_site: pkg.properties.lead_site,
-        main_duration: pkg.properties.main_duration,
-        recovery_duration: pkg.properties.recovery_duration,
+        subdiscipline: pkg.properties.sub_discipline,
+        cpq_quote____dsa_: pkg.properties.cpq_quote_title,
+        inotiv_lead_site: pkg.properties.lead_site,
+        main_study_duration__days_: pkg.properties.main_duration,
+        recovery_duration__days_: pkg.properties.recovery_duration,
       }));
 
       const result = await hubspot.serverless("createChildDeals", {
@@ -181,9 +182,10 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
         ],
       });
       console.log("result", result);
+      onNext(undefined, result);
     } catch (error) {
       console.error("Error creating child deals:", error);
-      setError("Failed to create child deals");
+      setError("Failed to create child deals. Please try again.");
     }
   };
 
@@ -192,7 +194,9 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
   }
 
   if (error) {
-    return <Text variant="bodytext">{error}</Text>;
+    return (
+      <ErrorScreen error={error} onBack={onBack} onRetry={fetchPackages} />
+    );
   }
 
   return (
