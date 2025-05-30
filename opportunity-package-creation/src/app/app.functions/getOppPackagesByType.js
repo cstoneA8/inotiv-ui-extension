@@ -4,7 +4,7 @@ exports.main = async (context = {}, sendResponse) => {
   const PROPERTY_NAME = "package_type";
   const objectType = process.env["OPP_PACKAGES_ID"];
   const accessToken = process.env["PRIVATE_APP_ACCESS_TOKEN"];
-  console.log("context get opp packages by type", context);
+
   const { packageType } = context.parameters;
 
   const hubspotClient = new hubspot.Client({
@@ -33,6 +33,9 @@ exports.main = async (context = {}, sendResponse) => {
         "species",
         "lead_site",
         "sort_order",
+        "cpq_quote_title",
+        "main_duration",
+        "recovery_duration",
       ],
       limit: 100,
     };

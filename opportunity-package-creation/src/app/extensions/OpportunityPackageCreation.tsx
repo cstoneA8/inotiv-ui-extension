@@ -157,6 +157,7 @@ const Extension = ({
   const [selectedPackageType, setSelectedPackageType] = useState<
     string | undefined
   >(undefined);
+  const [creationResult, setCreationResult] = useState<any>(null);
 
   console.log("context", context);
   const portalId = context.portal.id;
@@ -165,10 +166,13 @@ const Extension = ({
     setCurrentScreen(1);
   };
 
-  const handleNext = (packageType?: string) => {
+  const handleNext = (packageType?: string, result?: any) => {
     setError(null);
     if (packageType) {
       setSelectedPackageType(packageType);
+    }
+    if (result) {
+      setCreationResult(result);
     }
     setCurrentScreen(2);
   };
@@ -184,12 +188,16 @@ const Extension = ({
       {currentScreen === 2 && (
         <StudySelection
           onBack={handleBack}
-          onNext={() => setCurrentScreen(3)}
+          onNext={handleNext}
           selectedPackageType={selectedPackageType}
         />
       )}
       {currentScreen === 3 && (
-        <CreationResult portalId={portalId} onBack={handleBack} />
+        <CreationResult
+          portalId={portalId}
+          onBack={handleBack}
+          result={creationResult}
+        />
       )}
     </Flex>
   );

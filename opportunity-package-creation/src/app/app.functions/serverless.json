@@ -7,6 +7,10 @@
     "getOppPackagesByType": {
       "file": "getOppPackagesByType.js",
       "secrets": ["OPP_PACKAGES_ID"]
+    },
+    "createChildDeals": {
+      "file": "createChildDeals.js",
+      "secrets": ["OPP_PACKAGES_ID"]
     }
   }
 }

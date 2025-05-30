@@ -15,7 +15,7 @@ import {
 
 interface StudySelectionProps {
   onBack: () => void;
-  onNext: () => void;
+  onNext: (result: any) => void;
   selectedPackageType: string | undefined;
 }
 
@@ -140,6 +140,53 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
     }
   };
 
+  const handleFinish = async () => {
+    try {
+      const selectedPackagesData = packages.filter((pkg) =>
+        selectedPackages.includes(pkg.id)
+      );
+
+      // Extract the required properties from each selected package
+      const selectedStudiesData = selectedPackagesData.map((pkg) => ({
+        species: pkg.properties.species,
+        discipline: pkg.properties.discipline,
+        sub_discipline: pkg.properties.sub_discipline,
+        cpq_quote_title: pkg.properties.cpq_quote_title,
+        lead_site: pkg.properties.lead_site,
+        main_duration: pkg.properties.main_duration,
+        recovery_duration: pkg.properties.recovery_duration,
+      }));
+
+      const result = await hubspot.serverless("createChildDeals", {
+        parameters: { selectedStudies: selectedStudiesData },
+        propertiesToSend: [
+          "hs_object_id",
+          "company_association",
+          "primary_contact_association",
+          "dealstage",
+          "dealtype",
+          "dealname",
+          "probability",
+          "forecast_stage__dsa_",
+          "test_article_name__dsa_",
+          "test_article_type__dsa_",
+          "cx_team__dsa_",
+          "cx_rep__dsa_",
+          "regulatory_status",
+          "inotiv_lead_site",
+          "hubspot_owner_id",
+          "send_complaint_reporting__dsa_",
+          "roa__dsa_",
+          "roa_detail__dsa_",
+        ],
+      });
+      console.log("result", result);
+    } catch (error) {
+      console.error("Error creating child deals:", error);
+      setError("Failed to create child deals");
+    }
+  };
+
   if (isLoading) {
     return <Text>Loading packages...</Text>;
   }
@@ -257,7 +304,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
         </Button>
         <Button
           variant="primary"
-          onClick={onNext}
+          onClick={handleFinish}
           disabled={selectedPackages.length === 0}
         >
           Finish

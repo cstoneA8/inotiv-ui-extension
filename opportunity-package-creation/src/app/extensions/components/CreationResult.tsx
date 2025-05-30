@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, Flex, Heading, Link } from "@hubspot/ui-extensions";
 import { CreationResultProps } from "../types";
 
 // TODO: may want to link to a specific view
 
-export const CreationResult = ({ portalId, onBack }: CreationResultProps) => {
-  const [creationResult, setCreationResult] = useState(null);
-
+export const CreationResult = ({
+  portalId,
+  onBack,
+  result,
+}: CreationResultProps & { result: any }) => {
   return (
     <Flex direction="column" gap="md">
       <Heading>Confirmation</Heading>
