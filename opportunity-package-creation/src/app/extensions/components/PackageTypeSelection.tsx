@@ -6,6 +6,7 @@ import {
   List,
   Button,
   Flex,
+  LoadingSpinner,
 } from "@hubspot/ui-extensions";
 
 import { PackageTypeOption } from "../types/index";
@@ -59,7 +60,11 @@ export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
   };
 
   if (isLoading) {
-    return <Text>Loading package types...</Text>;
+    return (
+      <Flex direction="column" justify="center" align="center" gap="md">
+        <LoadingSpinner label="Loading package types..." />
+      </Flex>
+    );
   }
 
   if (error) {

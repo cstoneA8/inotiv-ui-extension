@@ -11,6 +11,8 @@ import {
   TableHeader,
   Checkbox,
   hubspot,
+  LoadingSpinner,
+  LoadingButton,
 } from "@hubspot/ui-extensions";
 import { ErrorScreen } from "./ErrorScreen";
 
@@ -51,6 +53,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
   const [selectedPackages, setSelectedPackages] = useState<string[]>([]);
   const [packages, setPackages] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFinishing, setIsFinishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sortState, setSortState] = useState(DEFAULT_SORT_STATE);
   const itemsPerPage = 10;
@@ -142,6 +145,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
   };
 
   const handleFinish = async () => {
+    setIsFinishing(true);
     try {
       const selectedPackagesData = packages.filter((pkg) =>
         selectedPackages.includes(pkg.id)
@@ -187,11 +191,17 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
     } catch (error) {
       console.error("Error creating child deals:", error);
       setError("Failed to create child deals. Please try again.");
+    } finally {
+      setIsFinishing(false);
     }
   };
 
   if (isLoading) {
-    return <Text>Loading packages...</Text>;
+    return (
+      <Flex direction="column" justify="center" align="center" gap="md">
+        <LoadingSpinner label="Loading studies..." />
+      </Flex>
+    );
   }
 
   if (error) {
@@ -307,13 +317,14 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
         <Button variant="secondary" onClick={onBack}>
           Previous
         </Button>
-        <Button
+        <LoadingButton
           variant="primary"
           onClick={handleFinish}
           disabled={selectedPackages.length === 0}
+          loading={isFinishing}
         >
           Finish
-        </Button>
+        </LoadingButton>
       </Flex>
     </Flex>
   );
