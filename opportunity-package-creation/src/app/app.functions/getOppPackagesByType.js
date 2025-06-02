@@ -36,6 +36,7 @@ exports.main = async (context = {}, sendResponse) => {
         "cpq_quote_title",
         "main_duration",
         "recovery_duration",
+        "opportunity_title",
       ],
       limit: 100,
     };
@@ -44,6 +45,14 @@ exports.main = async (context = {}, sendResponse) => {
       objectType,
       searchRequest
     );
+
+    // Log the first result to see what properties we're getting
+    if (apiResponse.results && apiResponse.results.length > 0) {
+      console.log(
+        "First opportunity package properties:",
+        apiResponse.results[0].properties
+      );
+    }
 
     return apiResponse.results;
   } catch (e) {

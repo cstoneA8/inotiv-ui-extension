@@ -6,7 +6,6 @@ exports.main = async (context = {}, sendResponse) => {
   const { propertiesToSend, parameters } = context;
 
   console.log("Selected studies:", parameters.selectedStudies);
-  console.log("Properties to fetch:", propertiesToSend);
 
   try {
     // Fetch the deal's contact and companyassociations
@@ -34,10 +33,6 @@ exports.main = async (context = {}, sendResponse) => {
     }
 
     const dealWithAssociations = await response.json();
-    console.log(
-      "Deal with associations:",
-      JSON.stringify(dealWithAssociations, null, 2)
-    );
 
     const associatedData = {
       // Get unique company IDs (using Set to remove duplicates)
@@ -66,8 +61,6 @@ exports.main = async (context = {}, sendResponse) => {
         opp_created_by_package: true,
       },
     };
-
-    console.log("Organized data:", JSON.stringify(associatedData, null, 2));
 
     const dealPayloads = prepareDealPayloads(associatedData);
     const createdDeals = await createBulkDeals(dealPayloads, accessToken);
@@ -122,11 +115,27 @@ function prepareDealPayloads(associatedData) {
       ],
     }));
 
+    // Create the combined dealname
+    const parentDealName = associatedData.dealProperties.dealname || "";
+    const opportunityTitle = study.opportunity_title || "";
+    const combinedDealName = `${parentDealName}_${opportunityTitle}`;
+
+    console.log("Deal name creation details:", {
+      parentDealName,
+      opportunityTitle,
+      combinedDealName,
+      studyProperties: study,
+    });
+
+    // Create a copy of study without opportunity_title
+    const { opportunity_title, ...studyWithoutTitle } = study;
+
     return {
       properties: {
         ...associatedData.dealProperties,
-        ...study,
+        ...studyWithoutTitle,
         ...associatedData.generatedValues,
+        dealname: combinedDealName, // Override the dealname with our combined version
       },
       associations: [...baseAssociations, ...companyAssociations],
     };
@@ -135,12 +144,6 @@ function prepareDealPayloads(associatedData) {
 
 async function createBulkDeals(dealPayloads, accessToken) {
   const url = "https://api.hubapi.com/crm/v3/objects/deals/batch/create";
-
-  // Add detailed logging
-  console.log(
-    "Deal payloads to be sent:",
-    JSON.stringify(dealPayloads, null, 2)
-  );
 
   const response = await fetch(url, {
     method: "POST",

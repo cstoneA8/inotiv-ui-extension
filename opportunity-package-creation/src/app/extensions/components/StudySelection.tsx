@@ -156,6 +156,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
         inotiv_lead_site: pkg.properties.lead_site,
         main_study_duration__days_: pkg.properties.main_duration,
         recovery_duration__days_: pkg.properties.recovery_duration,
+        opportunity_title: pkg.properties.opportunity_title,
       }));
 
       const result = await hubspot.serverless("createChildDeals", {
