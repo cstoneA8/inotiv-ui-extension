@@ -15,6 +15,7 @@ export interface ExtensionProps {
 export interface CreationResultProps {
   portalId: number;
   onBack?: () => void;
+  onRestart?: () => void;
 }
 
 // Package Types from the getPackageTypes serverless function

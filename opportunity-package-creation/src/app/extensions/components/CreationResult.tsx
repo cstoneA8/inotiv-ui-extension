@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Flex, Heading, Link } from "@hubspot/ui-extensions";
+import { Text, Flex, Heading, Link, Button } from "@hubspot/ui-extensions";
 import { CreationResultProps } from "../types";
 
 // TODO: may want to link to a specific view
@@ -7,6 +7,7 @@ import { CreationResultProps } from "../types";
 export const CreationResult = ({
   portalId,
   onBack,
+  onRestart,
   result,
 }: CreationResultProps & { result: any }) => {
   return (
@@ -19,6 +20,9 @@ export const CreationResult = ({
         </Link>
         .
       </Text>
+      <Flex gap="md">
+        <Button onClick={onRestart}>Restart</Button>
+      </Flex>
     </Flex>
   );
 };

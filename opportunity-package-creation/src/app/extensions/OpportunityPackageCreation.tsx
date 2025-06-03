@@ -40,6 +40,13 @@ const Extension = ({ context }: ExtensionProps) => {
     setError(null);
   };
 
+  const handleRestart = () => {
+    setCurrentScreen(1);
+    setError(null);
+    setSelectedPackageType(undefined);
+    setCreationResult(null);
+  };
+
   const handleNext = (packageType?: string, result?: any) => {
     setError(null);
     if (packageType) {
@@ -79,6 +86,7 @@ const Extension = ({ context }: ExtensionProps) => {
         <CreationResult
           portalId={portalId}
           onBack={handleBack}
+          onRestart={handleRestart}
           result={creationResult}
         />
       )}
