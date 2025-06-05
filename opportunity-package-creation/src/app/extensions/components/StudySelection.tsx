@@ -178,7 +178,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
           "test_article_type__dsa_",
           "cx_team__dsa_",
           "cx_rep__dsa_",
-          "regulatory_status",
+          "regulatory_status__dsa_",
           "inotiv_lead_site",
           "hubspot_owner_id",
           "send_complaint_reporting__dsa_",
