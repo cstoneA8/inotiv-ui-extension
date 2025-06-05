@@ -37,6 +37,7 @@ exports.main = async (context = {}, sendResponse) => {
         "main_duration",
         "recovery_duration",
         "opportunity_title",
+        "opportunity_type__dsa_",
       ],
       limit: 100,
     };

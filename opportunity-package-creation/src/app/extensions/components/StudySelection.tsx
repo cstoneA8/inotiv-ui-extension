@@ -184,6 +184,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
           "send_complaint_reporting__dsa_",
           "roa__dsa_",
           "roa_detail__dsa_",
+          "opportunity_type__dsa_",
         ],
       });
       console.log("result", result);
