@@ -97,6 +97,9 @@ export const PackageTypeSelection: React.FC<PackageTypeSelectionProps> = ({
           <>Test Article Type</>
           <>ROA</>
           <>ROA Details</>
+          <>Project Type 1</>
+          <>Project Type 2</>
+          <>Project Type 3</>
         </List>
       </Flex>
       <Flex direction="row" justify="end">
