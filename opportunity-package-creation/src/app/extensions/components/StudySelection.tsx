@@ -26,9 +26,9 @@ type SortDirection = "none" | "ascending" | "descending";
 
 interface SortState {
   package_type: SortDirection;
-  discipline: SortDirection;
-  sub_discipline: SortDirection;
-  sub_group: SortDirection;
+  project_type_1: SortDirection;
+  project_type_2: SortDirection;
+  project_type_3: SortDirection;
   species: SortDirection;
   lead_site: SortDirection;
   sort_order: SortDirection;
@@ -36,9 +36,9 @@ interface SortState {
 
 const DEFAULT_SORT_STATE: SortState = {
   package_type: "none",
-  discipline: "none",
-  sub_discipline: "none",
-  sub_group: "none",
+  project_type_1: "none",
+  project_type_2: "none",
+  project_type_3: "none",
   species: "none",
   lead_site: "none",
   sort_order: "none",
@@ -154,8 +154,9 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
       // Extract the required properties from each selected package
       const selectedStudiesData = selectedPackagesData.map((pkg) => ({
         species__dsa_: pkg.properties.species,
-        discipline: pkg.properties.discipline,
-        subdiscipline: pkg.properties.sub_discipline,
+        project_type_1: pkg.properties.project_type_1,
+        project_type_2: pkg.properties.project_type_2,
+        project_type_3: pkg.properties.project_type_3,
         cpq_quote____dsa_: pkg.properties.cpq_quote_title,
         inotiv_lead_site: pkg.properties.lead_site,
         main_study_duration__days_: pkg.properties.main_duration,
@@ -240,30 +241,30 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
             </TableHeader>
             <TableHeader
               width="min"
-              sortDirection={sortState.discipline}
+              sortDirection={sortState.project_type_1}
               onSortChange={(sortDirection) =>
-                handleSort("discipline", sortDirection)
+                handleSort("project_type_1", sortDirection)
               }
             >
-              Discipline
+              Project Type 1
             </TableHeader>
             <TableHeader
               width="min"
-              sortDirection={sortState.sub_discipline}
+              sortDirection={sortState.project_type_2}
               onSortChange={(sortDirection) =>
-                handleSort("sub_discipline", sortDirection)
+                handleSort("project_type_2", sortDirection)
               }
             >
-              Sub Discipline
+              Project Type 2
             </TableHeader>
             <TableHeader
               width="min"
-              sortDirection={sortState.sub_group}
+              sortDirection={sortState.project_type_3}
               onSortChange={(sortDirection) =>
-                handleSort("sub_group", sortDirection)
+                handleSort("project_type_3", sortDirection)
               }
             >
-              Sub Group
+              Project Type 3
             </TableHeader>
             <TableHeader
               width="min"
@@ -304,9 +305,9 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
                 />
               </TableCell>
               <TableCell>{pkg.properties.package_type}</TableCell>
-              <TableCell>{pkg.properties.discipline}</TableCell>
-              <TableCell>{pkg.properties.sub_discipline}</TableCell>
-              <TableCell>{pkg.properties.sub_group}</TableCell>
+              <TableCell>{pkg.properties.project_type_1}</TableCell>
+              <TableCell>{pkg.properties.project_type_2}</TableCell>
+              <TableCell>{pkg.properties.project_type_3}</TableCell>
               <TableCell>{pkg.properties.species}</TableCell>
               <TableCell>{pkg.properties.lead_site}</TableCell>
               <TableCell>{pkg.properties.sort_order}</TableCell>
