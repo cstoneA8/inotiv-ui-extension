@@ -34,18 +34,23 @@ exports.main = async (context = {}, sendResponse) => {
 
     const dealWithAssociations = await response.json();
 
+    // Add debugging to see what we actually received
+    console.log(
+      "Deal with associations:",
+      JSON.stringify(dealWithAssociations, null, 2)
+    );
+
+    // Add defensive checks for associations
+    const companies =
+      dealWithAssociations.associations?.companies?.results || [];
+    const contacts = dealWithAssociations.associations?.contacts?.results || [];
+
     const associatedData = {
       // Get unique company IDs (using Set to remove duplicates)
-      companyIds: [
-        ...new Set(
-          dealWithAssociations.associations.companies.results.map(
-            (company) => company.id
-          )
-        ),
-      ],
+      companyIds: [...new Set(companies.map((company) => company.id))],
 
       // Get primary contact ID (filter for type "primary_contact")
-      primaryContactId: dealWithAssociations.associations.contacts.results.find(
+      primaryContactId: contacts.find(
         (contact) => contact.type === "primary_contact"
       )?.id,
 

@@ -176,7 +176,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
       // Extract the required properties from each selected package
       const selectedStudiesData = selectedPackagesData.map((pkg) => ({
         species__dsa_: pkg.properties.species,
-        project_type_1_v2: mapProjectTypeValue(
+        project_type_1: mapProjectTypeValue(
           pkg.properties.project_type_1_v2 || ""
         ),
         project_type_2: mapProjectTypeValue(
