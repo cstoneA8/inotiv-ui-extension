@@ -26,9 +26,9 @@ type SortDirection = "none" | "ascending" | "descending";
 
 interface SortState {
   package_type: SortDirection;
-  project_type_1: SortDirection;
-  project_type_2: SortDirection;
-  project_type_3: SortDirection;
+  project_type_1_v2: SortDirection;
+  project_type_2_v2: SortDirection;
+  project_type_3_v2: SortDirection;
   species: SortDirection;
   lead_site: SortDirection;
   sort_order: SortDirection;
@@ -36,9 +36,9 @@ interface SortState {
 
 const DEFAULT_SORT_STATE: SortState = {
   package_type: "none",
-  project_type_1: "none",
-  project_type_2: "none",
-  project_type_3: "none",
+  project_type_1_v2: "none",
+  project_type_2_v2: "none",
+  project_type_3_v2: "none",
   species: "none",
   lead_site: "none",
   sort_order: "none",
@@ -144,6 +144,28 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
     }
   };
 
+  // Mapping function to transform opportunity package values to Deal property values
+  const mapProjectTypeValue = (value: string): string => {
+    // Map opportunity package values to Deal property values
+    const mappings: { [key: string]: string } = {
+      "Supporting  Inotiv in vivo_Bioanalysis":
+        "Supporting  Inotiv in vivo (Bioanalysis)",
+      "Supporting  Inotiv in vivo_Dose Formulation Analysis":
+        "Supporting  Inotiv in vivo (Dose Formulation Analysis)",
+      "Supporting  Inotiv in vivo_Histopathology":
+        "In Support of Inotiv in vivo (Histopathology)",
+      "Not Supporting Inotiv in vivo_Bioanalysis":
+        "Not Supporting Inotiv in vivo (Bioanalysis)",
+      "Not Supporting Inotiv in vivo_Dose Formulation Analysis":
+        "Not Supporting Inotiv in vivo (Dose Formulation Analysis)",
+      "Not Supporting Inotiv in vivo_Histopathology":
+        "Not Supporting Inotiv in vivo (Histopathology)",
+      // Add more mappings as needed
+    };
+
+    return mappings[value] || value; // Return mapped value or original if no mapping found
+  };
+
   const handleFinish = async () => {
     setIsFinishing(true);
     try {
@@ -154,9 +176,15 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
       // Extract the required properties from each selected package
       const selectedStudiesData = selectedPackagesData.map((pkg) => ({
         species__dsa_: pkg.properties.species,
-        project_type_1: pkg.properties.project_type_1,
-        project_type_2: pkg.properties.project_type_2,
-        project_type_3: pkg.properties.project_type_3,
+        project_type_1_v2: mapProjectTypeValue(
+          pkg.properties.project_type_1_v2 || ""
+        ),
+        project_type_2: mapProjectTypeValue(
+          pkg.properties.project_type_2_v2 || ""
+        ),
+        project_type_3: mapProjectTypeValue(
+          pkg.properties.project_type_3_v2 || ""
+        ),
         cpq_quote____dsa_: pkg.properties.cpq_quote_title,
         inotiv_lead_site: pkg.properties.lead_site,
         main_study_duration__days_: pkg.properties.main_duration,
@@ -241,27 +269,27 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
             </TableHeader>
             <TableHeader
               width="min"
-              sortDirection={sortState.project_type_1}
+              sortDirection={sortState.project_type_1_v2}
               onSortChange={(sortDirection) =>
-                handleSort("project_type_1", sortDirection)
+                handleSort("project_type_1_v2", sortDirection)
               }
             >
               Project Type 1
             </TableHeader>
             <TableHeader
               width="min"
-              sortDirection={sortState.project_type_2}
+              sortDirection={sortState.project_type_2_v2}
               onSortChange={(sortDirection) =>
-                handleSort("project_type_2", sortDirection)
+                handleSort("project_type_2_v2", sortDirection)
               }
             >
               Project Type 2
             </TableHeader>
             <TableHeader
               width="min"
-              sortDirection={sortState.project_type_3}
+              sortDirection={sortState.project_type_3_v2}
               onSortChange={(sortDirection) =>
-                handleSort("project_type_3", sortDirection)
+                handleSort("project_type_3_v2", sortDirection)
               }
             >
               Project Type 3
@@ -305,9 +333,9 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
                 />
               </TableCell>
               <TableCell>{pkg.properties.package_type}</TableCell>
-              <TableCell>{pkg.properties.project_type_1}</TableCell>
-              <TableCell>{pkg.properties.project_type_2}</TableCell>
-              <TableCell>{pkg.properties.project_type_3}</TableCell>
+              <TableCell>{pkg.properties.project_type_1_v2}</TableCell>
+              <TableCell>{pkg.properties.project_type_2_v2}</TableCell>
+              <TableCell>{pkg.properties.project_type_3_v2}</TableCell>
               <TableCell>{pkg.properties.species}</TableCell>
               <TableCell>{pkg.properties.lead_site}</TableCell>
               <TableCell>{pkg.properties.sort_order}</TableCell>

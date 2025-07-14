@@ -27,9 +27,9 @@ exports.main = async (context = {}, sendResponse) => {
       properties: [
         "hs_object_id",
         "package_type",
-        "project_type_1",
-        "project_type_2",
-        "project_type_3",
+        "project_type_1_v2",
+        "project_type_2_v2",
+        "project_type_3_v2",
         "species",
         "lead_site",
         "sort_order",
