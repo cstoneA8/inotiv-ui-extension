@@ -185,7 +185,7 @@ export const StudySelection: React.FC<StudySelectionProps> = ({
         project_type_3: mapProjectTypeValue(
           pkg.properties.project_type_3_v2 || ""
         ),
-        cpq_quote____dsa_: pkg.properties.cpq_quote_title,
+        cpq_quote_name__dsa_opp_package_: pkg.properties.cpq_quote_title,
         inotiv_lead_site: pkg.properties.lead_site,
         main_study_duration__days_: pkg.properties.main_duration,
         recovery_duration__days_: pkg.properties.recovery_duration,
